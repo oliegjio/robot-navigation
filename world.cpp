@@ -62,3 +62,33 @@ vector1 world::make_room_2(int room_width, int room_height) {
 
     return room;
 }
+
+vector1 world::room_2::make_walls() {
+    vector1 walls;
+
+    auto top_wall = shape::make_rectangle(0, 399, 400, 1);
+    walls.insert(walls.end(), top_wall.begin(), top_wall.end());
+
+    auto bottom_wall = shape::make_rectangle(0, 0, 400, 1);
+    walls.insert(walls.end(), bottom_wall.begin(), bottom_wall.end());
+
+    auto left_wall = shape::make_rectangle(0, 1, 1, 398);
+    walls.insert(walls.end(), left_wall.begin(), left_wall.end());
+
+    auto right_wall = shape::make_rectangle(399, 1, 1, 398);
+    walls.insert(walls.end(), right_wall.begin(), right_wall.end());
+
+    return walls;
+}
+
+vector1 world::room_2::make_rectangle() {
+    return shape::make_rectangle(280, 100, 40, 150);
+}
+
+vector1 world::room_2::make_square() {
+    return shape::make_rectangle(70, 70, 60, 60);
+}
+
+vector1 world::room_2::make_circle() {
+    return shape::make_circle(150, 250, 50);
+}
