@@ -4,21 +4,27 @@
 #include <vector>
 #include <utility>
 
+typedef int pair_type;
+typedef std::pair<pair_type, pair_type> pair;
+typedef std::vector<pair> vector1;
+typedef std::vector<std::vector<pair>> vector2;
+
 namespace shape {
 
-    std::vector<std::pair<int, int>> make_rectangle(int width, int height);
-    std::vector<std::pair<int, int>> make_rectangle(int x, int y, int width, int height);
-    std::vector<std::pair<int, int>> make_circle(int radius);
-    std::vector<std::pair<int, int>> make_circle(int x, int y, int radius);
+    vector1 make_rectangle(int width, int height);
+    vector1 make_rectangle(int x, int y, int width, int height);
+    vector1 make_circle(int radius);
+    vector1 make_circle(int x, int y, int radius);
     
-    void draw(std::vector<std::pair<int, int>> shape);
+    void draw(vector1 shape);
 
-    void rotate(std::vector<std::pair<int, int>> &shape, float angle);
-    void translate(std::vector<std::pair<int, int>> &shape, int x, int y);
+    void rotate(vector1 &shape, float angle);
+    void translate(vector1 &shape, int x, int y);
 
-    std::pair<int, int> get_center(const std::vector<std::pair<int, int>> &shape);
-    std::vector<std::pair<int, int>> vectors_from_center(const std::vector<std::pair<int, int>> &shape);
-    std::vector<std::pair<int, int>> minkowski_sum(const std::vector<std::pair<int, int>> &from, const std::vector<std::pair<int, int>> &to);
+    pair get_center(const vector1 &shape);
+    vector1 vectors_from_center(const vector1 &shape);
+    vector1 minkowski_sum(const vector1 &from, const vector1 &to);
+    vector1 minkowski_sum_(const vector1 &from, const vector1 &to);
 
 }
 

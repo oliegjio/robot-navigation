@@ -2,8 +2,8 @@
 
 #include "shape.h"
 
-std::vector<std::pair<int, int>> world::make_room_1(int room_width, int room_height) {
-    std::vector<std::pair<int, int>> room;
+vector1 world::make_room_1(int room_width, int room_height) {
+    vector1 room;
 
     const int wall_size = 20;
 
@@ -30,6 +30,35 @@ std::vector<std::pair<int, int>> world::make_room_1(int room_width, int room_hei
 
     auto right_box = shape::make_rectangle(room_width / 100 * 65, room_height / 100 * 35, room_width / 100 * 20, room_height / 100 * 30);
     room.insert(room.end(), right_box.begin(), right_box.end());
+
+    return room;
+}
+
+vector1 world::make_room_2(int room_width, int room_height) {
+    vector1 room;
+
+    const int wall_size = 1;
+
+    auto top_wall = shape::make_rectangle(0, room_height - wall_size, room_width, wall_size);
+    room.insert(room.end(), top_wall.begin(), top_wall.end());
+
+    auto left_wall = shape::make_rectangle(0, wall_size, wall_size, room_height - (wall_size * 2));
+    room.insert(room.end(), left_wall.begin(), left_wall.end());
+
+    auto right_wall = shape::make_rectangle(room_width - wall_size, wall_size, wall_size, room_height - (wall_size * 2));
+    room.insert(room.end(), right_wall.begin(), right_wall.end());
+
+    auto bottom_wall = shape::make_rectangle(0, 0, room_width, wall_size);
+    room.insert(room.end(), bottom_wall.begin(), bottom_wall.end());
+
+    auto circle = shape::make_circle(150, 250, 50);
+    room.insert(room.end(), circle.begin(), circle.end());
+
+    auto square = shape::make_rectangle(70, 70, 60, 60);
+    room.insert(room.end(), square.begin(), square.end());
+
+    auto rect = shape::make_rectangle(280, 100, 40, 150);
+    room.insert(room.end(), rect.begin(), rect.end());
 
     return room;
 }

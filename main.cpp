@@ -9,8 +9,8 @@
 #include "text.h"
 #include "world.h"
 
-#define WIN_WIDTH 800
-#define WIN_HEIGHT 600
+#define WIN_WIDTH 400
+#define WIN_HEIGHT 400
 
 clock_t current_time = clock();
 clock_t last_time = current_time;
@@ -19,10 +19,12 @@ float dt = 0;
 std::vector<std::pair<int, int>> robot, room, obstacles;
 
 void init_shapes() {
-//    robot = shape::make_rectangle(40, 40, 100, 200);
-//    shape::rotate(robot, 0.3);
-    room = world::make_room_1(WIN_WIDTH, WIN_HEIGHT);
-//    obstacles = shape::minkowski_sum(robot, room);
+    robot = shape::make_rectangle(200, 200, 23, 71);
+    shape::rotate(robot, 0.45);
+    room = world::make_room_2(WIN_WIDTH, WIN_HEIGHT);
+//    room = shape::make_rectangle(300, 300, 80, 80);
+//    room = shape::make_circle(500, 600, 500);
+    obstacles = shape::minkowski_sum(robot, room);
 }
 
 void display() {

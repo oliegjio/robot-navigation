@@ -3,10 +3,12 @@
 
 #include <vector>
 #include <utility>
+#include "shape.h"
 
 namespace world {
 
-    std::vector<std::pair<int, int>> make_room_1(int room_width, int room_height);
+    vector1 make_room_1(int room_width, int room_height);
+    vector1 make_room_2(int room_width, int room_height);
 
 }
 

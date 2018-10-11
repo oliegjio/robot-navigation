@@ -3,43 +3,48 @@
 #include <GL/glu.h>
 #include <cmath>
 #include <math.h>
+#include <set>
 
-std::vector<std::pair<int, int>> shape::make_rectangle(int width, int height) {
+vector1 shape::make_rectangle(int width, int height) {
 
-    std::vector<std::pair<int, int>> rectangle;
+    vector1 rectangle;
+    rectangle.reserve(width * height);
 
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            rectangle.push_back(std::pair<int, int>(i , j));
+            rectangle.push_back(pair(i , j));
         }
     }
 
     return rectangle;
 }
 
-std::vector<std::pair<int, int>> shape::make_rectangle(int x, int y, int width, int height) {
+vector1 shape::make_rectangle(int x, int y, int width, int height) {
 
-    std::vector<std::pair<int, int>> rectangle;
+    vector1 rectangle;
+    rectangle.reserve(width * height);
 
     for (int i = x; i < width + x; i++) {
         for (int j = y; j < height + y; j++) {
-            rectangle.push_back(std::pair<int, int>(i, j));
+            rectangle.push_back(pair(i, j));
         }
     }
 
     return rectangle;
 }
 
-std::vector<std::pair<int, int>> shape::make_circle(int radius) {
+vector1 shape::make_circle(int radius) {
+    int diamiter = radius * 2;
 
-    std::vector<std::pair<int, int>> circle;
+    vector1 circle;
+    circle.reserve(2 * diamiter * 4);
 
-    for (int i = -radius; i < radius; i++) {
-        for (int j = -radius; j < radius; j++) {
-            if (i < std::sqrt(radius - std::pow(j, 2)) &&
-                j < std::sqrt(radius - std::pow(i, 2)) &&
-                radius > std::pow(i, 2) + std::pow(j , 2)) {
-                circle.push_back(std::pair<int, int>(i, j));
+    for (int i = -diamiter; i < diamiter; i++) {
+        for (int j = -diamiter; j < diamiter; j++) {
+            if (i < std::sqrt(diamiter - std::pow(j, 2)) &&
+                j < std::sqrt(diamiter - std::pow(i, 2)) &&
+                diamiter > std::pow(i, 2) + std::pow(j , 2)) {
+                circle.push_back(pair(i, j));
             }
         }
     }
@@ -47,16 +52,18 @@ std::vector<std::pair<int, int>> shape::make_circle(int radius) {
     return circle;
 }
 
-std::vector<std::pair<int, int>> shape::make_circle(int x, int y, int radius) {
+vector1 shape::make_circle(int x, int y, int radius) {
+    int diamiter = radius * 2;
 
-    std::vector<std::pair<int, int>> circle;
+    vector1 circle;
+    circle.reserve(2 * diamiter * 4);
 
-    for (int i = -radius; i < radius; i++) {
-        for (int j = -radius; j < radius; j++) {
-            if (i < std::sqrt(radius - std::pow(j, 2)) &&
-                j < std::sqrt(radius - std::pow(i, 2)) &&
-                radius > std::pow(i, 2) + std::pow(j , 2)) {
-                circle.push_back(std::pair<int, int>(i + x, j + y));
+    for (int i = -diamiter; i < diamiter; i++) {
+        for (int j = -diamiter; j < diamiter; j++) {
+            if (i < std::sqrt(diamiter - std::pow(j, 2)) &&
+                j < std::sqrt(diamiter - std::pow(i, 2)) &&
+                diamiter > std::pow(i, 2) + std::pow(j , 2)) {
+                circle.push_back(pair(i + x, j + y));
             }
         }
     }
@@ -64,7 +71,7 @@ std::vector<std::pair<int, int>> shape::make_circle(int x, int y, int radius) {
     return circle;
 }
 
-void shape::draw(std::vector<std::pair<int, int>> shape) {
+void shape::draw(vector1 shape) {
     glBegin(GL_POINTS);
     for (int i = 0; i < shape.size(); i++) {
         glVertex2f(shape[i].first, shape[i].second);
@@ -72,8 +79,8 @@ void shape::draw(std::vector<std::pair<int, int>> shape) {
     glEnd();
 }
 
-std::pair<int, int> shape::get_center(const std::vector<std::pair<int, int>> &shape) {
-    std::pair<int, int> point(0, 0);
+pair shape::get_center(const vector1 &shape) {
+    pair point(0, 0);
     unsigned long int size = shape.size();
     for (int i = 0; i < size; i++) {
         point.first += shape[i].first;
@@ -84,26 +91,27 @@ std::pair<int, int> shape::get_center(const std::vector<std::pair<int, int>> &sh
     return point;
 }
 
-std::vector<std::pair<int, int>> shape::vectors_from_center(const std::vector<std::pair<int, int>> &shape) {
-    std::vector<std::pair<int, int>> result;
+vector1 shape::vectors_from_center(const vector1 &shape) {
+    vector1 result;
     auto center = shape::get_center(shape);
+    result.reserve(shape.size());
     for (int i = 0; i < shape.size(); i++) {
-        result.push_back(std::pair<int, int>(shape[i].first - center.first, shape[i].second - center.second));
+        result.push_back(pair(shape[i].first - center.first, shape[i].second - center.second));
     }
     return result;
 }
 
-void shape::translate(std::vector<std::pair<int, int>> &shape, int x, int y) {
+void shape::translate(vector1 &shape, int x, int y) {
     for (int i = 0; i < shape.size(); i++) {
         shape[i].first += x;
         shape[i].second += y;
     }
 }
 
-void shape::rotate(std::vector<std::pair<int, int>> &shape, float angle) {
+void shape::rotate(vector1 &shape, float angle) {
     float cos = std::cos(angle);
     float sin = std::sin(angle);
-    std::pair<int, int> center = shape::get_center(shape);
+    pair center = shape::get_center(shape);
     shape::translate(shape, -center.first, -center.second);
     for (int i = 0; i < shape.size(); i++) {
         shape[i].first = shape[i].first * cos - shape[i].second * sin;
@@ -112,13 +120,14 @@ void shape::rotate(std::vector<std::pair<int, int>> &shape, float angle) {
     shape::translate(shape, center.first, center.second);
 }
 
-std::vector<std::pair<int, int>> shape::minkowski_sum(const std::vector<std::pair<int, int>> &from, const std::vector<std::pair<int, int>> &to) {
-    std::vector<std::pair<int, int>> result;
+vector1 shape::minkowski_sum(const vector1 &from, const vector1 &to) {
+    std::set<std::pair<int, int>> set;
     auto centers = shape::vectors_from_center(from);
     for (int i = 0; i < to.size(); i++) {
         for (int j = 0; j < centers.size(); j++) {
-            result.push_back(std::pair<int, int>(to[i].first + centers[j].first, to[i].second + centers[j].second));
+            set.insert(pair(to[i].first + centers[j].first, to[i].second + centers[j].second));
         }
     }
+    vector1 result(set.begin(), set.end());
     return result;
 }
