@@ -17,6 +17,19 @@ std::vector<std::pair<int, int>> shape::make_rectangle(int width, int height) {
     return rectangle;
 }
 
+std::vector<std::pair<int, int>> shape::make_rectangle(int x, int y, int width, int height) {
+
+    std::vector<std::pair<int, int>> rectangle;
+
+    for (int i = x; i < width + x; i++) {
+        for (int j = y; j < height + y; j++) {
+            rectangle.push_back(std::pair<int, int>(i, j));
+        }
+    }
+
+    return rectangle;
+}
+
 std::vector<std::pair<int, int>> shape::make_circle(int radius) {
 
     std::vector<std::pair<int, int>> circle;

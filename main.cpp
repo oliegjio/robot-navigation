@@ -7,6 +7,7 @@
 
 #include "shape.h"
 #include "text.h"
+#include "world.h"
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
@@ -15,7 +16,8 @@ clock_t current_time = clock();
 clock_t last_time = current_time;
 float dt = 0;
 
-auto circle1 = shape::make_rectangle(50, 50);
+// auto circle1 = shape::make_rectangle(50, 50);
+auto room = world::get_room_1(WIN_WIDTH, WIN_HEIGHT);
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -24,8 +26,11 @@ void display() {
 
     char message[50];
     sprintf(message, "dt: %f", dt);
+    glColor3f(1.0, 0, 0);
+    text::print(50, 50, message);
+
     glColor3f(0, 0, 0);
-    text::print(10, 10, message);
+    shape::draw(room);
 
     glutSwapBuffers();
 }

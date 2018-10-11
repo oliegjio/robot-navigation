@@ -7,6 +7,7 @@
 namespace shape {
 
     std::vector<std::pair<int, int>> make_rectangle(int width, int height);
+    std::vector<std::pair<int, int>> make_rectangle(int x, int y, int width, int height);
     std::vector<std::pair<int, int>> make_circle(int radius);
     
     void draw(std::vector<std::pair<int, int>> shape);
