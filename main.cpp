@@ -6,12 +6,9 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "shape.h"
+#include "points.h"
 #include "text.h"
-#include "world.h"
-#include "random.h"
-#include "random_points.h"
-#include "grid.h"
+#include "load.h"
 
 #define WIN_WIDTH 400
 #define WIN_HEIGHT 400
@@ -20,22 +17,15 @@ clock_t current_time = clock();
 clock_t last_time = current_time;
 float dt = 0;
 
-vector1 robot, walls, square, rectangle, circle, obstacles, points;
-group1 room;
+points::point_vector room, robot, obstacles, grid;
 
 void init_shapes() {
-    robot = shape::make_rectangle(200, 200, 23, 71);
-    shape::rotate(robot, 0.45);
+    robot = points::rectangle(200, 200, 23, 71);
+    points::rotate(robot, 0.45);
 
-    room.insert(shape1(world::room_2::make_walls(), color(1, 0, 0)));
-    room.insert(shape1(world::room_2::make_square(), color(0, 1, 0)));
-    room.insert(shape1(world::room_2::make_rectangle(), color(0, 0, 1)));
-    room.insert(shape1(world::room_2::make_circle(), color(1, 0, 1)));
-
-//    points = random_points::in_bounds(0, 0, WIN_WIDTH, WIN_HEIGHT, 1000, 10.0);
-    points = grid::make_grid(0, 0, WIN_WIDTH, WIN_HEIGHT, 0.01);
-
-    obstacles = shape::minkowski_sum(robot, shape::vectors_from_group1(room));
+    room = load::room_preset();
+    grid = points::grid(0, 0, WIN_WIDTH, WIN_HEIGHT, 0.01);
+    obstacles = points::minkowski(robot, room);
 }
 
 void display() {
@@ -43,18 +33,14 @@ void display() {
 
     glPointSize(2.5);
 
-    shape::draw(obstacles, 0.5, 0.55, 1.0);
-    shape::draw(room);
-    shape::draw(robot, 1.0, 0, 0);
-
-    glPointSize(1.5);
-    glColor3f(0, 0, 0);
-    shape::draw(points);
+    points::draw(obstacles, 0, 0, 1);
+    points::draw(room, 0, 1, 0);
+    points::draw(robot, 1, 0, 0);
+    points::draw(grid);
 
     char message[50];
     sprintf(message, "dt: %f", dt);
-    glColor3f(1.0, 0, 1.0);
-    text::print(50, 50, message);
+    text::print(50, 50, message, 1, 0, 1);
 
     glutSwapBuffers();
 }
