@@ -70,7 +70,7 @@ vector1 shape::make_circle(int x, int y, int radius) {
     return circle;
 }
 
-void shape::draw(vector1 shape) {
+void shape::draw(const vector1 &shape) {
     glBegin(GL_POINTS);
     for (size_t i = 0; i < shape.size(); i++) {
         glVertex2f(shape[i].first, shape[i].second);
@@ -78,13 +78,26 @@ void shape::draw(vector1 shape) {
     glEnd();
 }
 
-void shape::draw(vector1 shape, GLfloat r, GLfloat g, GLfloat b) {
+void shape::draw(const vector1 &shape, GLfloat r, GLfloat g, GLfloat b) {
     glColor3f(r, g, b);
     glBegin(GL_POINTS);
     for (size_t i = 0; i < shape.size(); i++) {
         glVertex2f(shape[i].first, shape[i].second);
     }
     glEnd();
+}
+
+void shape::draw(const group1 &shapes) {
+    for (auto i = shapes.begin(); i != shapes.end(); ++i) {
+        auto shape = i->first;
+        auto color = i->second;
+        glColor3f(std::get<0>(color), std::get<1>(color), std::get<2>(color));
+        glBegin(GL_POINTS);
+        for (size_t i = 0; i < shape.size(); i++) {
+            glVertex2f(shape[i].first, shape[i].second);
+        }
+        glEnd();
+    }
 }
 
 pair shape::get_center(const vector1 &shape) {
@@ -137,5 +150,13 @@ vector1 shape::minkowski_sum(const vector1 &from, const vector1 &to) {
         }
     }
     vector1 result(set.begin(), set.end());
+    return result;
+}
+
+vector1 shape::vectors_from_group1(group1 group) {
+    vector1 result;
+    for (auto i = group.begin(); i != group.end(); ++i) {
+        result.insert(result.end(), (*i).first.begin(), (*i).first.end());
+    }
     return result;
 }

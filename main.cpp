@@ -3,11 +3,14 @@
 #include <vector>
 #include <utility>
 #include <cstdio>
+#include <cstdlib>
 #include <ctime>
 
 #include "shape.h"
 #include "text.h"
 #include "world.h"
+#include "random.h"
+#include "random_points.h"
 
 #define WIN_WIDTH 400
 #define WIN_HEIGHT 400
@@ -16,23 +19,21 @@ clock_t current_time = clock();
 clock_t last_time = current_time;
 float dt = 0;
 
-vector1 robot, walls, square, rectangle, circle, obstacles, room;
+vector1 robot, walls, square, rectangle, circle, obstacles, points;
+group1 room;
 
 void init_shapes() {
     robot = shape::make_rectangle(200, 200, 23, 71);
     shape::rotate(robot, 0.45);
-//    room = world::make_room_2(WIN_WIDTH, WIN_HEIGHT);
-    walls = world::room_2::make_walls();
-    square = world::room_2::make_square();
-    rectangle = world::room_2::make_rectangle();
-    circle = world::room_2::make_circle();
 
-    room.insert(room.end(), walls.begin(), walls.end());
-    room.insert(room.end(), square.begin(), square.end());
-    room.insert(room.end(), rectangle.begin(), rectangle.end());
-    room.insert(room.end(), circle.begin(), circle.end());
+    room.insert(shape1(world::room_2::make_walls(), color(1, 0, 0)));
+    room.insert(shape1(world::room_2::make_square(), color(0, 1, 0)));
+    room.insert(shape1(world::room_2::make_rectangle(), color(0, 0, 1)));
+    room.insert(shape1(world::room_2::make_circle(), color(1, 0, 1)));
 
-    obstacles = shape::minkowski_sum(robot, room);
+    points = random_points::in_bounds(pair(0, 0), pair(WIN_WIDTH, WIN_HEIGHT), 10000);
+
+    obstacles = shape::minkowski_sum(robot, shape::vectors_from_group1(room));
 }
 
 void display() {
@@ -41,12 +42,12 @@ void display() {
     glPointSize(2.5);
 
     shape::draw(obstacles, 0.5, 0.55, 1.0);
-
-    glColor3f(0, 0.3, 1);
     shape::draw(room);
+    shape::draw(robot, 1.0, 0, 0);
 
+    glPointSize(1);
     glColor3f(1, 0, 0);
-    shape::draw(robot);
+    shape::draw(points);
 
     char message[50];
     sprintf(message, "dt: %f", dt);
@@ -75,7 +76,13 @@ void idle() {
 }
 
 int main(int argc, char **argv) {
+    srand(static_cast<unsigned int>(time(nullptr)));
+
     init_shapes();
+
+    for (size_t i = 0; i < points.size(); i++) {
+        printf(" (%d, %d) ", points[i].first, points[i].second);
+    }
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
