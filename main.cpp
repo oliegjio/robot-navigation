@@ -11,6 +11,7 @@
 #include "world.h"
 #include "random.h"
 #include "random_points.h"
+#include "grid.h"
 
 #define WIN_WIDTH 400
 #define WIN_HEIGHT 400
@@ -31,7 +32,8 @@ void init_shapes() {
     room.insert(shape1(world::room_2::make_rectangle(), color(0, 0, 1)));
     room.insert(shape1(world::room_2::make_circle(), color(1, 0, 1)));
 
-    points = random_points::in_bounds(0, 0, WIN_WIDTH, WIN_HEIGHT, 10000, 3.0);
+//    points = random_points::in_bounds(0, 0, WIN_WIDTH, WIN_HEIGHT, 1000, 10.0);
+    points = grid::make_grid(0, 0, WIN_WIDTH, WIN_HEIGHT, 0.01);
 
     obstacles = shape::minkowski_sum(robot, shape::vectors_from_group1(room));
 }
