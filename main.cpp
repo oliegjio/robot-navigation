@@ -16,21 +16,33 @@ clock_t current_time = clock();
 clock_t last_time = current_time;
 float dt = 0;
 
-// auto circle1 = shape::make_rectangle(50, 50);
-auto room = world::get_room_1(WIN_WIDTH, WIN_HEIGHT);
+std::vector<std::pair<int, int>> robot, room, obstacles;
+
+void init_shapes() {
+    robot = shape::make_rectangle(40, 40, 100, 200);
+    shape::rotate(robot, 0.3);
+    room = shape::make_circle(300, 300, 200);
+    obstacles = shape::minkowski_sum(robot, room);
+}
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glPointSize(2.5);
 
-    char message[50];
-    sprintf(message, "dt: %f", dt);
-    glColor3f(1.0, 0, 0);
-    text::print(50, 50, message);
+    glColor3f(0, 0, 1.0);
+    shape::draw(obstacles);
 
     glColor3f(0, 0, 0);
     shape::draw(room);
+
+    glColor3f(1.0, 0, 0);
+    shape::draw(robot);
+
+    char message[50];
+    sprintf(message, "dt: %f", dt);
+    glColor3f(1.0, 0, 1.0);
+    text::print(50, 50, message);
 
     glutSwapBuffers();
 }
@@ -54,6 +66,8 @@ void idle() {
 }
 
 int main(int argc, char **argv) {
+    init_shapes();
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);

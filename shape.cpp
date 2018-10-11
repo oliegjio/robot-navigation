@@ -47,6 +47,23 @@ std::vector<std::pair<int, int>> shape::make_circle(int radius) {
     return circle;
 }
 
+std::vector<std::pair<int, int>> shape::make_circle(int x, int y, int radius) {
+
+    std::vector<std::pair<int, int>> circle;
+
+    for (int i = -radius; i < radius; i++) {
+        for (int j = -radius; j < radius; j++) {
+            if (i < std::sqrt(radius - std::pow(j, 2)) &&
+                j < std::sqrt(radius - std::pow(i, 2)) &&
+                radius > std::pow(i, 2) + std::pow(j , 2)) {
+                circle.push_back(std::pair<int, int>(i + x, j + y));
+            }
+        }
+    }
+
+    return circle;
+}
+
 void shape::draw(std::vector<std::pair<int, int>> shape) {
     glBegin(GL_POINTS);
     for (int i = 0; i < shape.size(); i++) {
@@ -67,6 +84,15 @@ std::pair<int, int> shape::get_center(const std::vector<std::pair<int, int>> &sh
     return point;
 }
 
+std::vector<std::pair<int, int>> shape::vectors_from_center(const std::vector<std::pair<int, int>> &shape) {
+    std::vector<std::pair<int, int>> result;
+    auto center = shape::get_center(shape);
+    for (int i = 0; i < shape.size(); i++) {
+        result.push_back(std::pair<int, int>(shape[i].first - center.first, shape[i].second - center.second));
+    }
+    return result;
+}
+
 void shape::translate(std::vector<std::pair<int, int>> &shape, int x, int y) {
     for (int i = 0; i < shape.size(); i++) {
         shape[i].first += x;
@@ -84,4 +110,15 @@ void shape::rotate(std::vector<std::pair<int, int>> &shape, float angle) {
         shape[i].second = shape[i].first * sin + shape[i].second * cos;
     }
     shape::translate(shape, center.first, center.second);
+}
+
+std::vector<std::pair<int, int>> shape::minkowski_sum(const std::vector<std::pair<int, int>> &from, const std::vector<std::pair<int, int>> &to) {
+    std::vector<std::pair<int, int>> result;
+    auto centers = shape::vectors_from_center(from);
+    for (int i = 0; i < to.size(); i++) {
+        for (int j = 0; j < centers.size(); j++) {
+            result.push_back(std::pair<int, int>(to[i].first + centers[j].first, to[i].second + centers[j].second));
+        }
+    }
+    return result;
 }
