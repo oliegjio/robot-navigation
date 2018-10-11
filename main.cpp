@@ -19,10 +19,10 @@ float dt = 0;
 std::vector<std::pair<int, int>> robot, room, obstacles;
 
 void init_shapes() {
-    robot = shape::make_rectangle(40, 40, 100, 200);
-    shape::rotate(robot, 0.3);
-    room = shape::make_circle(300, 300, 200);
-    obstacles = shape::minkowski_sum(robot, room);
+//    robot = shape::make_rectangle(40, 40, 100, 200);
+//    shape::rotate(robot, 0.3);
+    room = world::make_room_1(WIN_WIDTH, WIN_HEIGHT);
+//    obstacles = shape::minkowski_sum(robot, room);
 }
 
 void display() {
