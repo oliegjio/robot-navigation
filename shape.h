@@ -6,8 +6,16 @@
 
 namespace shape {
 
-    std::vector<std::pair<double, double>> make_rectangle(int width, int height);
-    std::vector<std::pair<double, double>> make_circle(int radius);
+    std::vector<std::pair<int, int>> make_rectangle(int width, int height);
+    std::vector<std::pair<int, int>> make_circle(int radius);
+    
+    void draw(std::vector<std::pair<int, int>> shape);
+
+    void rotate(std::vector<std::pair<int, int>> &shape, float angle);
+    void translate(std::vector<std::pair<int, int>> &shape, int x, int y);
+
+    std::pair<int, int> get_center(const std::vector<std::pair<int, int>> &shape);
+//    std::vector<std::pair<int, int>> get_
 
 }
 
