@@ -1,6 +1,5 @@
 #include "shape.h"
 
-#include <GL/glu.h>
 #include <cmath>
 #include <math.h>
 #include <set>
@@ -73,7 +72,16 @@ vector1 shape::make_circle(int x, int y, int radius) {
 
 void shape::draw(vector1 shape) {
     glBegin(GL_POINTS);
-    for (int i = 0; i < shape.size(); i++) {
+    for (size_t i = 0; i < shape.size(); i++) {
+        glVertex2f(shape[i].first, shape[i].second);
+    }
+    glEnd();
+}
+
+void shape::draw(vector1 shape, GLfloat r, GLfloat g, GLfloat b) {
+    glColor3f(r, g, b);
+    glBegin(GL_POINTS);
+    for (size_t i = 0; i < shape.size(); i++) {
         glVertex2f(shape[i].first, shape[i].second);
     }
     glEnd();
@@ -82,7 +90,7 @@ void shape::draw(vector1 shape) {
 pair shape::get_center(const vector1 &shape) {
     pair point(0, 0);
     unsigned long int size = shape.size();
-    for (int i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         point.first += shape[i].first;
         point.second += shape[i].second;
     }
@@ -95,14 +103,14 @@ vector1 shape::vectors_from_center(const vector1 &shape) {
     vector1 result;
     auto center = shape::get_center(shape);
     result.reserve(shape.size());
-    for (int i = 0; i < shape.size(); i++) {
+    for (size_t i = 0; i < shape.size(); i++) {
         result.push_back(pair(shape[i].first - center.first, shape[i].second - center.second));
     }
     return result;
 }
 
 void shape::translate(vector1 &shape, int x, int y) {
-    for (int i = 0; i < shape.size(); i++) {
+    for (size_t i = 0; i < shape.size(); i++) {
         shape[i].first += x;
         shape[i].second += y;
     }
@@ -113,7 +121,7 @@ void shape::rotate(vector1 &shape, float angle) {
     float sin = std::sin(angle);
     pair center = shape::get_center(shape);
     shape::translate(shape, -center.first, -center.second);
-    for (int i = 0; i < shape.size(); i++) {
+    for (size_t i = 0; i < shape.size(); i++) {
         shape[i].first = shape[i].first * cos - shape[i].second * sin;
         shape[i].second = shape[i].first * sin + shape[i].second * cos;
     }
@@ -123,8 +131,8 @@ void shape::rotate(vector1 &shape, float angle) {
 vector1 shape::minkowski_sum(const vector1 &from, const vector1 &to) {
     std::set<std::pair<int, int>> set;
     auto centers = shape::vectors_from_center(from);
-    for (int i = 0; i < to.size(); i++) {
-        for (int j = 0; j < centers.size(); j++) {
+    for (size_t i = 0; i < to.size(); i++) {
+        for (size_t j = 0; j < centers.size(); j++) {
             set.insert(pair(to[i].first + centers[j].first, to[i].second + centers[j].second));
         }
     }

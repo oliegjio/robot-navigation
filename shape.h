@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <utility>
+#include <GL/glu.h>
 
 typedef int pair_type;
 typedef std::pair<pair_type, pair_type> pair;
@@ -17,6 +18,7 @@ namespace shape {
     vector1 make_circle(int x, int y, int radius);
     
     void draw(vector1 shape);
+    void draw(vector1 shape, GLfloat r, GLfloat g, GLfloat b);
 
     void rotate(vector1 &shape, float angle);
     void translate(vector1 &shape, int x, int y);

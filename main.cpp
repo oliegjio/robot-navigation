@@ -40,8 +40,7 @@ void display() {
 
     glPointSize(2.5);
 
-    glColor3f(0.5, 0.55, 1);
-    shape::draw(obstacles);
+    shape::draw(obstacles, 0.5, 0.55, 1.0);
 
     glColor3f(0, 0.3, 1);
     shape::draw(room);
