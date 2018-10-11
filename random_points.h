@@ -5,7 +5,7 @@
 
 namespace random_points {
 
-    vector1 in_bounds(pair p1, pair p2, int number);
+    vector1 in_bounds(int x1, int y1, int x2, int y2, int number, float delta);
 
 }
 

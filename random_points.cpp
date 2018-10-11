@@ -1,16 +1,31 @@
 #include "random_points.h"
 
 #include "random.h"
+#include <cmath>
 
-vector1 random_points::in_bounds(pair p1, pair p2, int number) {
+static float distance(int x1, int y1, int x2, int y2) {
+    return std::sqrt(std::pow(x1 - x2, 2) + std::pow(y1 - y2, 2));
+}
+
+vector1 random_points::in_bounds(int x1, int y1, int x2, int y2, int number, float delta) {
     vector1 result;
     result.reserve(number);
-    for (int i = 0; i < number; i++) {
-        int x = random(p1.first, p2.first);
-        int y = random(p1.second, p2.second);
-        if ((x > p1.first && y > p1.second) || (x < p2.first && y < p2.second)) {
-            result.push_back(pair(x, y));
+    int generated = 0;
+    int distance_flag = 0;
+    while (generated != number) {
+        int x = random(x1, x2);
+        int y = random(y1, y2);
+        for (size_t i = 0; i < result.size(); i++) {
+            if (distance(x, y, result[i].first, result[i].second) < delta) {
+                distance_flag = 1;
+                break;
+            }
         }
+        if (distance_flag == 0) {
+            result.push_back(pair(x, y));
+            generated += 1;
+        }
+        distance_flag = 0;
     }
     return result;
 }

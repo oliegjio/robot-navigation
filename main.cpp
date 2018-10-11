@@ -31,7 +31,7 @@ void init_shapes() {
     room.insert(shape1(world::room_2::make_rectangle(), color(0, 0, 1)));
     room.insert(shape1(world::room_2::make_circle(), color(1, 0, 1)));
 
-    points = random_points::in_bounds(pair(0, 0), pair(WIN_WIDTH, WIN_HEIGHT), 10000);
+    points = random_points::in_bounds(0, 0, WIN_WIDTH, WIN_HEIGHT, 10000, 3.0);
 
     obstacles = shape::minkowski_sum(robot, shape::vectors_from_group1(room));
 }
@@ -45,8 +45,8 @@ void display() {
     shape::draw(room);
     shape::draw(robot, 1.0, 0, 0);
 
-    glPointSize(1);
-    glColor3f(1, 0, 0);
+    glPointSize(1.5);
+    glColor3f(0, 0, 0);
     shape::draw(points);
 
     char message[50];
@@ -79,10 +79,6 @@ int main(int argc, char **argv) {
     srand(static_cast<unsigned int>(time(nullptr)));
 
     init_shapes();
-
-    for (size_t i = 0; i < points.size(); i++) {
-        printf(" (%d, %d) ", points[i].first, points[i].second);
-    }
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
