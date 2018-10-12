@@ -9,6 +9,7 @@
 #include "points.h"
 #include "text.h"
 #include "load.h"
+#include "delaunay.h"
 
 #define WIN_WIDTH 400
 #define WIN_HEIGHT 400
