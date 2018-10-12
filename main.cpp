@@ -25,8 +25,11 @@ void init_shapes() {
     points::rotate(robot, 0.45);
 
     room = load::room_preset();
-    grid = points::grid(0, 0, WIN_WIDTH, WIN_HEIGHT, 0.01);
-    obstacles = points::minkowski(robot, room);
+    grid = points::random(0, 0, WIN_WIDTH, WIN_HEIGHT, 100, 10);
+//    grid = points::grid(0, 0, WIN_WIDTH, WIN_HEIGHT, 0.01);
+//    obstacles = points::minkowski(robot, room);
+
+    delaunay::triangulate(grid);
 }
 
 void display() {

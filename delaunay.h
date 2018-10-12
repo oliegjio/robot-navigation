@@ -8,8 +8,8 @@
 namespace delaunay {
 
     struct triangle {
-        std::vector<points::point*> vertices;
-        std::vector<triangle*> triangles;
+        std::vector<points::point*> *vertices;
+        std::vector<triangle*> *triangles;
     };
     typedef std::vector<points::point*> vertices;
     typedef std::vector<triangle*> triangles;
