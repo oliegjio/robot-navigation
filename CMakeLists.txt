@@ -3,7 +3,7 @@ project (robot-navigation)
 
 add_executable(robot-navigation main.cpp)
 
-target_sources(robot-navigation PUBLIC points.cpp text.cpp rnd.cpp load.cpp delaunay.cpp)
+target_sources(robot-navigation PUBLIC points.cpp text.cpp rnd.cpp load.cpp curves.cpp)
 
 target_link_libraries(robot-navigation GL)
 target_link_libraries(robot-navigation GLU)

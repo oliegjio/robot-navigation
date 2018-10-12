@@ -6,6 +6,22 @@
 
 #include "rnd.h"
 
+points::point operator+(const points::point &left, const points::point &right) {
+    return points::point(left.first + right.first, left.second + right.second);
+}
+
+points::point operator-(const points::point &left, const points::point &right) {
+    return points::point(left.first - right.first, left.second - right.second);
+}
+
+points::point operator*(const points::point &left, const points::point &right) {
+    return points::point(left.first * right.first, left.second * right.second);
+}
+
+points::point operator/(const points::point &left, const points::point &right) {
+    return points::point(left.first / right.first, left.second / right.second);
+}
+
 points::point_vector points::rectangle(points::point_type x, points::point_type y, points::point_type width, points::point_type height) {
     points::point_vector rectangle;
     rectangle.reserve(static_cast<size_t>(width * height));

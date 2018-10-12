@@ -10,6 +10,7 @@
 #include "text.h"
 #include "load.h"
 #include "delaunay.h"
+#include "curves.h"
 
 #define WIN_WIDTH 400
 #define WIN_HEIGHT 400
@@ -19,17 +20,29 @@ clock_t last_time = current_time;
 float dt = 0;
 
 points::point_vector room, robot, obstacles, grid;
+points::point_vector c;
 
 void init_shapes() {
-    robot = points::rectangle(200, 200, 23, 71);
-    points::rotate(robot, 0.45);
+//    robot = points::rectangle(200, 200, 23, 71);
+//    points::rotate(robot, 0.45);
 
-    room = load::room_preset();
-    grid = points::random(0, 0, WIN_WIDTH, WIN_HEIGHT, 100, 10);
+    points::point_vector positions;
+    positions.push_back(points::point(100, 100));
+    positions.push_back(points::point(200, 200));
+    positions.push_back(points::point(300, 100));
+
+    c = curves::bazier(positions);
+    printf(" SIZE: %zu \n", c.size());
+    for (const auto &p : c) {
+        printf(" (%d, %d) ", p.first, p.second);
+    }
+
+//    room = load::room_preset();
+//    grid = points::random(0, 0, WIN_WIDTH, WIN_HEIGHT, 100, 10);
 //    grid = points::grid(0, 0, WIN_WIDTH, WIN_HEIGHT, 0.01);
 //    obstacles = points::minkowski(robot, room);
 
-    delaunay::triangulate(grid);
+//    delaunay::triangulate(grid);
 }
 
 void display() {
@@ -37,10 +50,11 @@ void display() {
 
     glPointSize(2.5);
 
-    points::draw(obstacles, 0, 0, 1);
-    points::draw(room, 0, 1, 0);
-    points::draw(robot, 1, 0, 0);
-    points::draw(grid);
+//    points::draw(obstacles, 0, 0, 1);
+//    points::draw(room, 0, 1, 0);
+//    points::draw(robot, 1, 0, 0);
+//    points::draw(grid);
+    points::draw(c);
 
     char message[50];
     sprintf(message, "dt: %f", dt);

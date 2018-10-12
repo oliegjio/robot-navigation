@@ -31,4 +31,9 @@ namespace points {
 
 }
 
+points::point operator+(const points::point &left, const points::point &right);
+points::point operator-(const points::point &left, const points::point &right);
+points::point operator*(const points::point &left, const points::point &right);
+points::point operator/(const points::point &left, const points::point &right);
+
 #endif // POINTS_H
