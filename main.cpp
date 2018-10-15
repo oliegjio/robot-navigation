@@ -30,15 +30,13 @@ void init_shapes() {
     positions.push_back(points::point(100, 100));
     positions.push_back(points::point(200, 200));
     positions.push_back(points::point(300, 100));
+    positions.push_back(points::point(350, 150));
+    positions.push_back(points::point(250, 200));
 
-    c = curves::bazier(positions);
-    printf(" SIZE: %zu \n", c.size());
-    for (const auto &p : c) {
-        printf(" (%d, %d) ", p.first, p.second);
-    }
+    c = curves::bazier(positions); 
 
 //    room = load::room_preset();
-//    grid = points::random(0, 0, WIN_WIDTH, WIN_HEIGHT, 100, 10);
+//    grid = points::random(0, 0, WIN_WIDTH, WIN_HEIGHT, 1000, 10);
 //    grid = points::grid(0, 0, WIN_WIDTH, WIN_HEIGHT, 0.01);
 //    obstacles = points::minkowski(robot, room);
 
